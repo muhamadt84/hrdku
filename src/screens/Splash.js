@@ -1,18 +1,19 @@
-import { useNavigation } from "@react-navigation/native"
-import { useEffect } from "react"
-import { ImageBackground, View, StyleSheet } from "react-native"
+import React from 'react';
+import {useNavigation} from '@react-navigation/native';
+import {useEffect} from 'react';
+import {ImageBackground, View, StyleSheet} from 'react-native';
 
-const SplashBg = require('../assets/images/SplashBg.png')
+const SplashBg = require('../assets/images/SplashBg.png');
 
 function Splash() {
-  const navigation = useNavigation()
+  const navigation = useNavigation();
 
   useEffect(() => {
     setTimeout(() => {
-      navigation.replace('Login')
+      navigation.replace('Login');
     }, 2000);
-  }, [navigation])
-  
+  }, [navigation]);
+
   return (
     <View style={styles.container}>
       <ImageBackground
@@ -21,7 +22,7 @@ function Splash() {
         style={styles.bgImage}
       />
     </View>
-  )
+  );
 }
 
 const styles = StyleSheet.create({
@@ -30,8 +31,8 @@ const styles = StyleSheet.create({
   },
   bgImage: {
     flex: 1,
-    justifyContent: 'center'
-  }
-})
+    justifyContent: 'center',
+  },
+});
 
-export default Splash
+export default Splash;

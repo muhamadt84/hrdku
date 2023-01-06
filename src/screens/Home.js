@@ -1,23 +1,16 @@
-import {
-  Image,
-  ImageBackground,
-  StyleSheet,
-  Text,
-  View
-} from "react-native";
-import LayoutContainer from "../components/LayoutContainer";
-
+import React from 'react';
+import {Image, ImageBackground, StyleSheet, Text, View} from 'react-native';
+import LayoutContainer from '../components/LayoutContainer';
 
 import Icon from 'react-native-vector-icons/Ionicons';
-import BgLogin from "../assets/images/Bg-Login.png"
-import BgWhite from "../assets/images/BgWhite.png"
+import BgLogin from '../assets/images/Bg-Login.png';
+import BgWhite from '../assets/images/BgWhite.png';
 
-import ICInfo from '../assets/Info.png'
-import ICPlan from '../assets/Plan.png'
-import ICNotification from '../assets/Notification.png'
-import ICBadges from '../assets/Badges.png'
-import ICProfile from '../assets/Profile.png'
-import { color } from "@rneui/base";
+import ICInfo from '../assets/Info.png';
+import ICPlan from '../assets/Plan.png';
+import ICNotification from '../assets/Notification.png';
+import ICBadges from '../assets/Badges.png';
+import ICProfile from '../assets/Profile.png';
 
 function Home() {
   return (
@@ -25,9 +18,8 @@ function Home() {
       <ImageBackground
         style={styles.bgImage}
         source={BgLogin}
-        resizeMode='cover'
-      >
-        <View style={{ padding: 25 }}>
+        resizeMode="cover">
+        <View style={styles.padding}>
           <View style={styles.containerName}>
             <Text style={styles.name}>Hi, Taufik Hidayah</Text>
             {/* <ICNotification /> */}
@@ -54,21 +46,16 @@ function Home() {
               />
             </View>
           </View>
-          <Text style={styles.wish} >Semoga hari mu menyenangkan!</Text>
+          <Text style={styles.wish}>Semoga hari mu menyenangkan!</Text>
           <View style={styles.containerAddress}>
-            <Icon
-              name='location-outline'
-              size={20}
-              style={styles.iconPin}
-            />
-            <Text style={styles.address}>Bintaro Sektor 3, mandar utama III, Kota Tangerang Selatan.</Text>
+            <Icon name="location-outline" size={20} style={styles.iconPin} />
+            <Text style={styles.address}>
+              Bintaro Sektor 3, mandar utama III, Kota Tangerang Selatan.
+            </Text>
           </View>
         </View>
         <View>
-          <Image
-            style={styles.bgWhite}
-            source={BgWhite}
-          />
+          <Image style={styles.bgWhite} source={BgWhite} />
           <View style={styles.containerMenu}>
             <View style={styles.containerMenuIcon}>
               <Image
@@ -95,25 +82,26 @@ function Home() {
           </View>
 
           <View style={styles.containerAbsen}>
-            <View style={{ flexDirection: 'row' }}>
-              <Text style={{ color: 'black', letterSpacing: 0.5, marginRight: 4, marginBottom: 4 }}>Klik tombol</Text>
-              <Text style={{ color: '#DD5353', letterSpacing: 0.5 }}>ABSEN SEKARANG</Text>
+            <View style={styles.flex}>
+              <Text style={styles.clicked}>Klik tombol</Text>
+              <Text style={styles.absen}>ABSEN SEKARANG</Text>
             </View>
-            <Text style={{ color: 'black', letterSpacing: 0.5 }}>untung memulai absensi hadian anda</Text>
-            <View style={styles.button} >
+            <Text style={styles.descAbsen}>
+              untung memulai absensi hadian anda
+            </Text>
+            <View style={styles.button}>
               <Text
                 style={styles.buttonText}
-              // onPress={() => navigation.navigate('Home')}
+                // onPress={() => navigation.navigate('Home')}
               >
                 Absen Sekarang
               </Text>
             </View>
-
           </View>
         </View>
       </ImageBackground>
     </LayoutContainer>
-  )
+  );
 }
 
 const styles = StyleSheet.create({
@@ -124,12 +112,12 @@ const styles = StyleSheet.create({
     // justifyContent: 'center'
   },
   bgWhite: {
-    marginTop: 75
+    marginTop: 75,
   },
   containerName: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    alignItems: 'center'
+    alignItems: 'center',
   },
   name: {
     color: 'white',
@@ -137,11 +125,11 @@ const styles = StyleSheet.create({
     fontWeight: '500',
   },
   containerIcon: {
-    flexDirection: 'row'
+    flexDirection: 'row',
   },
   containerNotif: {
     position: 'relative',
-    alignSelf: 'center'
+    alignSelf: 'center',
   },
   icon: {
     marginHorizontal: 4,
@@ -149,12 +137,12 @@ const styles = StyleSheet.create({
   badges: {
     position: 'absolute',
     top: 19,
-    left: 29
+    left: 29,
   },
   wish: {
     color: 'white',
     marginTop: 10,
-    fontSize: 18
+    fontSize: 18,
   },
   containerAddress: {
     flexDirection: 'row',
@@ -168,15 +156,15 @@ const styles = StyleSheet.create({
     margin: 'auto',
     left: 0,
     right: 0,
-    paddingHorizontal: 25
+    paddingHorizontal: 25,
   },
   containerMenuIcon: {
-    position: 'relative'
+    position: 'relative',
   },
   iconMenu: {
     width: 170,
     height: 175,
-    borderRadius: 10
+    borderRadius: 10,
   },
   contentMenu: {
     position: 'absolute',
@@ -186,18 +174,18 @@ const styles = StyleSheet.create({
   titleMenu: {
     color: 'black',
     fontSize: 18,
-    fontWeight: '700'
+    fontWeight: '700',
   },
   descMenu: {
     color: 'black',
   },
   iconPin: {
-    color: 'white'
+    color: 'white',
   },
   address: {
     color: 'white',
     marginLeft: 4,
-    paddingRight: 25
+    paddingRight: 25,
   },
   containerAbsen: {
     position: 'absolute',
@@ -211,7 +199,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     alignSelf: 'center',
     borderRadius: 18,
-    shadowColor: "#000",
+    shadowColor: '#000',
     shadowOffset: {
       width: 0,
       height: 7,
@@ -219,13 +207,12 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.43,
     shadowRadius: 9.51,
     elevation: 15,
-
   },
   button: {
     marginTop: 15,
     width: 300,
     backgroundColor: '#F05D48',
-    borderRadius: 100
+    borderRadius: 100,
   },
   buttonText: {
     textTransform: 'uppercase',
@@ -234,7 +221,27 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontWeight: 'bold',
     color: 'white',
-    letterSpacing: 0.5
+    letterSpacing: 0.5,
   },
-})
-export default Home
+  clicked: {
+    color: 'black',
+    letterSpacing: 0.5,
+    marginRight: 4,
+    marginBottom: 4,
+  },
+  flex: {
+    flexDirection: 'row',
+  },
+  padding: {
+    padding: 25,
+  },
+  absen: {
+    color: '#DD5353',
+    letterSpacing: 0.5,
+  },
+  descAbsen: {
+    color: 'black',
+    letterSpacing: 0.5,
+  },
+});
+export default Home;

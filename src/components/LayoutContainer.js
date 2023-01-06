@@ -1,28 +1,33 @@
+import React from 'react';
 import {
   TouchableWithoutFeedback,
   Keyboard,
   View,
-  StatusBar
-} from "react-native"
+  StatusBar,
+  StyleSheet,
+} from 'react-native';
 
-function LayoutContainer({ children }) {
+function LayoutContainer({children}) {
   return (
-    <TouchableWithoutFeedback
-      onPress={Keyboard.dismiss}
-      accessible={false}
-    >
-      <View style={{ flex: 1 }}>
+    <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
+      <View style={styles.container}>
         <StatusBar
           animated={true}
           backgroundColor="black"
-          barStyle='dark-content'
-          showHideTransition='fade'
+          barStyle="dark-content"
+          showHideTransition="fade"
           hidden={false}
           translucent={false}
         />
         {children}
       </View>
     </TouchableWithoutFeedback>
-  )
+  );
 }
-export default LayoutContainer
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
+});
+export default LayoutContainer;

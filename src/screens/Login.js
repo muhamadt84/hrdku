@@ -1,36 +1,32 @@
-import { useState } from "react";
+import React, {useState} from 'react';
 import {
   Text,
   View,
   StyleSheet,
   ImageBackground,
   Image,
-  TextInput
-} from "react-native"
+  TextInput,
+} from 'react-native';
 
 import Icon from 'react-native-vector-icons/Ionicons';
-import { useNavigation } from "@react-navigation/native";
+import {useNavigation} from '@react-navigation/native';
 
-import LayoutContainer from "../components/LayoutContainer";
-import BgLogin from "../assets/images/Bg-Login.png"
-import LogoLogin from "../assets/images/Logo-Login.png"
+import LayoutContainer from '../components/LayoutContainer';
+import BgLogin from '../assets/images/Bg-Login.png';
+import LogoLogin from '../assets/images/Logo-Login.png';
 
 function Login() {
-  const navigation = useNavigation()
-  const [hidePass, setHidePass] = useState(true)
+  const navigation = useNavigation();
+  const [hidePass, setHidePass] = useState(true);
 
   return (
     <LayoutContainer>
       <ImageBackground
         style={styles.bgImage}
         source={BgLogin}
-        resizeMode='cover'
-      >
+        resizeMode="cover">
         <Text style={styles.title}>Selamat Datang</Text>
-        <Text
-          style={styles.text}
-          numberOfLines={5}
-        >
+        <Text style={styles.text} numberOfLines={5}>
           Semua tentang absesnsi, informasi, dan acara.
         </Text>
         <Image
@@ -40,10 +36,7 @@ function Login() {
           height={143}
         />
         {/* <Icon name="rocket" size={30} color="#900" /> */}
-        <TextInput
-          style={styles.input}
-          placeholder="Email / ID karyawan"
-        />
+        <TextInput style={styles.input} placeholder="Email / ID karyawan" />
         <View style={styles.passSection}>
           <TextInput
             style={styles.inputPass}
@@ -57,12 +50,11 @@ function Login() {
             onPress={() => setHidePass(!hidePass)}
           />
         </View>
-        <View style={styles.button} >
+        <View style={styles.button}>
           <Text
             style={styles.buttonText}
             // onPress={() => alert("Soon!")}
-            onPress={() => navigation.navigate('Home')}
-          >
+            onPress={() => navigation.navigate('Home')}>
             Masuk
           </Text>
         </View>
@@ -73,7 +65,7 @@ function Login() {
         </View>
       </ImageBackground>
     </LayoutContainer>
-  )
+  );
 }
 
 const styles = StyleSheet.create({
@@ -83,7 +75,7 @@ const styles = StyleSheet.create({
   bgImage: {
     flex: 1,
     alignItems: 'center',
-    justifyContent: 'center'
+    justifyContent: 'center',
   },
   title: {
     color: 'white',
@@ -117,7 +109,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     paddingHorizontal: 20,
     paddingVertical: 8,
-    width: 350
+    width: 350,
   },
   passIcon: {
     padding: 10,
@@ -126,13 +118,13 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: 'white',
     color: 'grey',
-    fontSize: 16
+    fontSize: 16,
   },
   button: {
     marginTop: 30,
     width: 350,
     backgroundColor: '#F05D48',
-    borderRadius: 100
+    borderRadius: 100,
   },
   buttonText: {
     textTransform: 'uppercase',
@@ -140,11 +132,11 @@ const styles = StyleSheet.create({
     padding: 20,
     fontSize: 18,
     fontWeight: 'bold',
-    color: 'white'
+    color: 'white',
   },
   forgetText: {
     marginTop: 20,
-    color: 'white'
+    color: 'white',
   },
   registContainer: {
     marginTop: 50,
@@ -153,11 +145,11 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   akunText: {
-    color: 'white'
+    color: 'white',
   },
   daftarText: {
     color: '#F05D48',
     marginLeft: 10,
-  }
-})
-export default Login
+  },
+});
+export default Login;
