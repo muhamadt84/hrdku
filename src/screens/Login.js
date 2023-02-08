@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import {
   Text,
   View,
@@ -9,11 +9,12 @@ import {
 } from 'react-native';
 
 import Icon from 'react-native-vector-icons/Ionicons';
-import {useNavigation} from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';
 
 import LayoutContainer from '../components/LayoutContainer';
 import BgLogin from '../assets/images/Bg-Login.png';
 import LogoLogin from '../assets/images/Logo-Login.png';
+import LinearGradient from 'react-native-linear-gradient';
 
 function Login() {
   const navigation = useNavigation();
@@ -50,18 +51,20 @@ function Login() {
             onPress={() => setHidePass(!hidePass)}
           />
         </View>
-        <View style={styles.button}>
+        <LinearGradient colors={['#DE5454', '#FF7C32']} style={styles.button}>
           <Text
             style={styles.buttonText}
             // onPress={() => alert("Soon!")}
             onPress={() => navigation.navigate('Home')}>
             Masuk
           </Text>
-        </View>
-        <Text style={styles.forgetText}>Lupa kata sandi?</Text>
+        </LinearGradient>
+        <Text style={styles.forgetText} onPress={() => navigation.navigate('LupaSandi')}>Lupa kata sandi?</Text>
         <View style={styles.registContainer}>
           <Text style={styles.akunText}>Belum mempunyai akun?</Text>
-          <Text style={styles.daftarText}>Daftar sekarang</Text>
+          <Text style={styles.daftarText}
+            onPress={() => navigation.navigate('Daftar')}
+          >Daftar sekarang</Text>
         </View>
       </ImageBackground>
     </LayoutContainer>
