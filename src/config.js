@@ -1,0 +1,1 @@
+export const BASE_URL = 'http://128.199.125.236/hrdku-dev/gateway/public/api'

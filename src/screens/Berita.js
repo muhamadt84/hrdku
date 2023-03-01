@@ -1,17 +1,49 @@
-import React from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { Image, ImageBackground, ScrollView, StyleSheet, Text, TouchableWithoutFeedback, View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import LayoutContainer from '../components/LayoutContainer';
 import SelectDropdown from 'react-native-select-dropdown';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
-
+import { BASE_URL } from '../config';
+import { AuthContext } from '../context/AuthContext';
+import Header from '../components/HeaderComponent';
 import ICInfo from '../assets/Info.png';
 
 function Berita() {
-  const countries = ["This Month", "Canada", "Australia", "Ireland"]
+  const countries = ["Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"]
+  const navigation = useNavigation();
+  const [news, setNews] = useState([]);
+  const { userInfo } = useContext(AuthContext);
+
+  const getNews = async () => {
+    try {
+      let list = await fetch(`${BASE_URL}/v1/info-list?companyId=1`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer ' + userInfo.Data.token
+        }
+      });
+      list = await list.json();
+      console.log(list);
+      setNews(list.Data)
+      // console.log({ news })
+    } catch (error) {
+      console.log('Error', error.message);
+    }
+  };
+
+  useEffect(() => {
+    getNews();
+  }, []);
+
   return (
     <ScrollView>
       <LayoutContainer style={styles.bg}>
+        <View style={{ backgroundColor: 'white' }}>
+          <Header title="Info & Berita" onPress={() => navigation.goBack()} />
+        </View>
+
         <View style={styles.containerDropdown}>
           <SelectDropdown
             data={countries}
@@ -38,8 +70,25 @@ function Berita() {
             rowTextStyle={styles.dropdownRowTxtStyle}
           />
         </View>
-        <ListBerita />
+        {/* <ListBerita /> */}
+        {news.map((item, index) => {
+          console.log({ news })
+          return <TouchableWithoutFeedback key={index} onPress={() => navigation.navigate('DetailBerita', { info_id: item.info_id })}>
+            <View style={styles.containerBerita}>
+              <Image
+                source={{ uri: item.image_url }}
+                resizeMode="cover"
+                style={styles.imageBerita}
+              />
+              <View style={styles.containerText}>
+                <Text style={styles.title}>{item.title}</Text>
+                <Text style={styles.paragraf}>{item.tanggal}</Text>
+                <Text style={styles.paragraf}>{item.info_id}</Text>
+              </View>
+            </View>
+          </TouchableWithoutFeedback>
 
+        })}
 
       </LayoutContainer>
     </ScrollView>

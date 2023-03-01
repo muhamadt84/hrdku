@@ -6,6 +6,7 @@ import LayoutContainer from '../components/LayoutContainer';
 import SelectDropdown from 'react-native-select-dropdown'
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import LinearGradient from 'react-native-linear-gradient';
+import Calendar from 'react-calendar';
 
 function BuatJadwal() {
   const navigation = useNavigation();
@@ -15,16 +16,7 @@ function BuatJadwal() {
     'Canada',
     'Australia',
     'Ireland',
-    'Brazil',
-    'England',
-    'Dubai',
-    'France',
-    'Germany',
-    'Saudi Arabia',
-    'Argentina',
-    'India',
   ];
-
 
   return (
     <ScrollView contentContainerStyle={styles.outer}>

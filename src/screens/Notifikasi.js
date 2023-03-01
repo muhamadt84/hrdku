@@ -1,11 +1,38 @@
-import React from 'react';
-import { Image, ImageBackground, ScrollView, StyleSheet, Text, TouchableWithoutFeedback, View } from 'react-native';
+import React, { useState, useEffect, useContext } from 'react';
+import { Image, ScrollView, StyleSheet, Text, TouchableWithoutFeedback, View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import LayoutContainer from '../components/LayoutContainer';
-
+import { BASE_URL } from '../config';
+import { AuthContext } from '../context/AuthContext';
+import RenderHtml from 'react-native-render-html';
 import ICInfo from '../assets/images/Docs-Notif.png';
 
 function Notifikasi() {
+  const navigation = useNavigation();
+  const { content, setContent } = useState('');
+  const { userInfo } = useContext(AuthContext);
+  const [data, setData] = useState([]);
+
+  const getData = async () => {
+    try {
+      let list = await fetch(`${BASE_URL}/v1/notification-list?companyId=1&employeeId=${userInfo.Data.user.employee_id}`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer ' + userInfo.Data.token
+        }
+      });
+      list = await list.json();
+      console.log(list);
+      setData(list.Data)
+    } catch (error) {
+      console.log('Error', error.message);
+    }
+  };
+
+  useEffect(() => {
+    getData();
+  }, []);
 
   return (
     <ScrollView >
@@ -19,50 +46,48 @@ function Notifikasi() {
 
       <LayoutContainer style={styles.bg}>
 
-        <ListNotifikasi />
+        {/* <ListNotifikasi /> */}
+        {data.map((item, index) => {
+          return (
+            <TouchableWithoutFeedback key={index} >
+              <View style={{ paddingHorizontal: 40, backgroundColor: 'white' }}>
+                <View style={styles.containerNotifikasi}>
+                  <View style={styles.imageNotifikasi}>
+                    <Image source={ICInfo} />
+                  </View>
+                  <View style={styles.containerText}>
+                    <Text style={styles.title}>{item.notification_title}</Text>
+                    <Text style={styles.paragraf}>
+                      {item.notification_content}
+                    </Text>
 
+                    <RenderHtml
+                      // contentWidth={width}
+                      source={"html:" + content}
+                    />
+                  </View>
+                  <View style={styles.containerWaktu}>
+                    <Text style={styles.waktu}>{item.notification_date}</Text>
+                    <Image source={ICInfo} style={{ marginTop: 10 }} />
+                  </View>
+                </View>
+                <View
+                  style={{
+                    borderBottomColor: '#EDEDED',
+                    borderBottomWidth: 1,
+                  }}
+                />
+
+              </View>
+            </TouchableWithoutFeedback>
+          )
+        })
+        }
 
       </LayoutContainer>
     </ScrollView>
   );
 }
-
-const ListNotifikasi = () => {
-  var list = [];
-  const navigation = useNavigation();
-
-  for (let i = 0; i < 5; i++) {
-    list.push(<TouchableWithoutFeedback key={i} >
-      <View style={{ paddingHorizontal: 40, backgroundColor: 'white' }}>
-        <View style={styles.containerNotifikasi}>
-
-          <View style={styles.imageNotifikasi}>
-            <Image source={ICInfo} />
-          </View>
-          <View style={styles.containerText}>
-            <Text style={styles.title}>Angga Kurnia</Text>
-            <Text style={styles.paragraf}>Alasan : Ada acara kerluarga, karena wajib datang</Text>
-          </View>
-          <View style={styles.containerWaktu}>
-            <Text style={styles.waktu}>10.45 Pagi</Text>
-            <Image source={ICInfo} style={{ marginTop: 10 }} />
-          </View>
-
-        </View>
-
-        <View
-          style={{
-            borderBottomColor: '#EDEDED',
-            borderBottomWidth: 1,
-          }}
-        />
-
-      </View>
-    </TouchableWithoutFeedback>
-    )
-  }
-  return list
-};
 
 const styles = StyleSheet.create({
   containerHeader: {

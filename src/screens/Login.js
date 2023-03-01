@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import {
   Text,
   View,
@@ -15,13 +15,30 @@ import LayoutContainer from '../components/LayoutContainer';
 import BgLogin from '../assets/images/Bg-Login.png';
 import LogoLogin from '../assets/images/Logo-Login.png';
 import LinearGradient from 'react-native-linear-gradient';
+import { AuthContext } from '../context/AuthContext';
+import Spinner from 'react-native-loading-spinner-overlay'
+import { useSelector } from 'react-redux';
 
 function Login() {
   const navigation = useNavigation();
   const [hidePass, setHidePass] = useState(true);
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const { isLoading, login, userInfo } = useContext(AuthContext);
+  const access_token = useSelector(store => store.tokenReducer.token);
+
+  useEffect(() => {
+    console.log({ userInfo });
+    //console.log({ access_token });
+    //access_token ? navigation.navigate('Home') : null
+    if (userInfo.Data) {
+      userInfo.Data.token ? navigation.navigate('Home') : null
+    }
+  }, [])
 
   return (
     <LayoutContainer>
+      {/* <Spinner visible={isLoading} /> */}
       <ImageBackground
         style={styles.bgImage}
         source={BgLogin}
@@ -36,13 +53,19 @@ function Login() {
           width={200}
           height={143}
         />
-        {/* <Icon name="rocket" size={30} color="#900" /> */}
-        <TextInput style={styles.input} placeholder="Email / ID karyawan" />
+
+        <TextInput style={styles.input}
+          placeholder="Email / ID karyawan"
+          value={email}
+          onChangeText={(email) => setEmail(email)}
+        />
         <View style={styles.passSection}>
           <TextInput
             style={styles.inputPass}
             placeholder="Masukan kata sandi"
             secureTextEntry={hidePass}
+            value={password}
+            onChangeText={(password) => setPassword(password)}
           />
           <Icon
             name={hidePass ? 'eye' : 'eye-off'}
@@ -54,8 +77,11 @@ function Login() {
         <LinearGradient colors={['#DE5454', '#FF7C32']} style={styles.button}>
           <Text
             style={styles.buttonText}
-            // onPress={() => alert("Soon!")}
-            onPress={() => navigation.navigate('Home')}>
+            onPress={() => {
+              login(email, password);
+              // navigation.navigate('Home');
+            }}
+          >
             Masuk
           </Text>
         </LinearGradient>

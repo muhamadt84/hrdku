@@ -1,5 +1,5 @@
-import React from 'react';
-import { Image, ImageBackground, ScrollView, StyleSheet, Text, TouchableWithoutFeedback, View } from 'react-native';
+import React, { useState, useEffect, useContext } from 'react';
+import { Image, ScrollView, StyleSheet, Text, TouchableWithoutFeedback, View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import LayoutContainer from '../components/LayoutContainer';
 
@@ -8,13 +8,46 @@ import SelectDropdown from 'react-native-select-dropdown';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import LinearGradient from 'react-native-linear-gradient';
 
+import Header from '../components/HeaderComponent';
+import { BASE_URL } from '../config';
+import { AuthContext } from '../context/AuthContext';
+
 function Jadwal() {
   navigation = useNavigation();
-  const countries = ["This Month", "Canada", "Australia", "Ireland"]
+  const filter = ["Semua", "Disetujui", "Ditolak", "Diproses"]
+  const [data, setData] = useState([]);
+  const { userInfo } = useContext(AuthContext);
+
+  const status = "Disetujui";
+  let i = 0;
+
+  const getData = async () => {
+    try {
+      let list = await fetch(`${BASE_URL}/v1/member/attendance/absence_list?employee_id=${userInfo.Data.user.employee_id}&company_id=1&approved=1&unapproved=1`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer ' + userInfo.Data.token
+        }
+      });
+      list = await list.json();
+      console.log(list);
+      setData(list.Data)
+    } catch (error) {
+      console.log('Error', error.message);
+    }
+  };
+
+  useEffect(() => {
+    getData();
+  }, []);
 
   return (
     <ScrollView>
       <LayoutContainer>
+        <View style={{ backgroundColor: 'white' }}>
+          <Header title="Daftar Tugas Kerja" onPress={() => navigation.goBack()} />
+        </View>
         <View style={styles.bg}>
           <View style={styles.containerIzin}>
             <Text style={styles.titleText}>Rencana Izin/Absen</Text>
@@ -32,7 +65,7 @@ function Jadwal() {
           </View>
           <View style={styles.containerDropdown}>
             <SelectDropdown
-              data={countries}
+              data={filter}
               // defaultValueByIndex={1}
               // defaultValue={'Egypt'}
               onSelect={(selectedItem, index) => {
@@ -58,51 +91,43 @@ function Jadwal() {
           </View>
         </View>
 
-        <ListJadwal />
+        {/* <ListJadwal /> */}
+        {data.map((item, index) => {
+          return (
 
-
+            <TouchableWithoutFeedback key={index} >
+              <View style={styles.containerJadwal}>
+                <View style={styles.containerNama}>
+                  <View style={styles.leftNama}>
+                    <Text style={styles.no}>{++i}</Text>
+                    <Text style={styles.nama}>Angga Kurnia A</Text>
+                  </View>
+                  <View style={styles.rightNama}>
+                    <View>
+                      <View>
+                        <Text style={[styles.statusText,
+                        status === "Diproses" ? styles.textOrange : '',
+                        status === "Disetujui" ? styles.textGreen : '',
+                        status === "Ditolak" ? styles.textRed : '',
+                        ]}>
+                          Diproses
+                        </Text>
+                      </View>
+                    </View>
+                    <Image source={ICStatus} style={styles.imageStatus} />
+                  </View>
+                </View>
+                <Text style={styles.paragraf}>Pada tanggal : {item.ar_start_date} - {item.ar_end_date}</Text>
+                <Text style={styles.paragraf}>Alasan : {item.ar_reason}</Text>
+              </View>
+            </TouchableWithoutFeedback>
+          )
+        })
+        }
       </LayoutContainer>
     </ScrollView>
   );
 }
-
-const ListJadwal = () => {
-  var list = [];
-  const navigation = useNavigation();
-  const status = "Disetujui";
-
-  for (let i = 0; i < 5; i++) {
-    list.push(<TouchableWithoutFeedback key={i} >
-      <View style={styles.containerJadwal}>
-        <View style={styles.containerNama}>
-          <View style={styles.leftNama}>
-            <Text style={styles.no}>{i}</Text>
-            <Text style={styles.nama}>Angga Kurnia A</Text>
-          </View>
-          <View style={styles.rightNama}>
-            <View>
-              <View>
-                <Text style={[styles.statusText,
-                status === "Diproses" ? styles.textOrange : '',
-                status === "Disetujui" ? styles.textGreen : '',
-                status === "Ditolak" ? styles.textRed : '',
-                ]}>
-                  Diproses
-                </Text>
-              </View>
-            </View>
-            <Image source={ICStatus} style={styles.imageStatus} />
-          </View>
-        </View>
-        <Text style={styles.paragraf}>Pada tanggal : 21 Juni 2021 - 24 Desember 2021</Text>
-        <Text style={styles.paragraf}>Alasan : Ada acara Keluarga</Text>
-
-      </View>
-    </TouchableWithoutFeedback>
-    )
-  }
-  return list
-};
 
 const styles = StyleSheet.create({
   bg: {

@@ -1,14 +1,25 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { ScrollView, StyleSheet, Text, View, TextInput, Image, ImageBackground, TouchableWithoutFeedback } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import LayoutContainer from '../components/LayoutContainer';
 import Icon from 'react-native-vector-icons/Ionicons';
 import LinearGradient from 'react-native-linear-gradient';
+import { AuthContext } from '../context/AuthContext';
 
 function Daftar() {
   const navigation = useNavigation();
   const [hidePass, setHidePass] = useState(true);
   const [hidePassConfirm, setHidePassConfirm] = useState(true);
+
+  const [company_id, setCompany_id] = useState(null);
+  const [employee_nik, setEmployee_nik] = useState(null);
+  const [employee_name, setEmployee_name] = useState(null);
+  const [employee_email, setEmployee_email] = useState(null);
+  const [employee_departement, setEmployee_departement] = useState(null);
+  const [employee_phone_no, setEmployee_phone_no] = useState(null);
+  const [employee_password, setEmployee_password] = useState(null);
+
+  const { register } = useContext(AuthContext);
 
   return (
     <ScrollView contentContainerStyle={styles.outer}>
@@ -28,12 +39,12 @@ function Daftar() {
         <View style={styles.bg}>
 
           <View>
-            <TextInput style={styles.input} placeholder="Kode Perusahaan" />
-            <TextInput style={styles.input} placeholder="ID Karyawan*" />
-            <TextInput style={styles.input} placeholder="Nama Lengkap" />
-            <TextInput style={styles.input} placeholder="Email*" />
-            <TextInput style={styles.input} placeholder="Job Desk / Departemen*" />
-            <TextInput style={styles.input} placeholder="Nomor Telepon / Phone*" />
+            <TextInput style={styles.input} placeholder="Kode Perusahaan" onChangeText={text => setCompany_id(text)} />
+            <TextInput style={styles.input} placeholder="ID Karyawan*" onChangeText={text => setEmployee_nik(text)} />
+            <TextInput style={styles.input} placeholder="Nama Lengkap" onChangeText={text => setEmployee_name(text)} />
+            <TextInput style={styles.input} placeholder="Email*" onChangeText={text => setEmployee_email(text)} />
+            <TextInput style={styles.input} placeholder="Job Desk / Departemen*" onChangeText={text => setEmployee_departement(text)} />
+            <TextInput style={styles.input} placeholder="Nomor Telepon / Phone*" onChangeText={text => setEmployee_phone_no(text)} />
             <View
               style={{
                 borderBottomColor: '#F2F2F2',
@@ -60,21 +71,26 @@ function Daftar() {
               <TextInput
                 style={styles.inputPass}
                 placeholder="Konfirmasi kata sandi"
-                secureTextEntry={hidePass}
+                secureTextEntry={hidePassConfirm}
+                onChangeText={text => setEmployee_password(text)}
               />
               <Icon
                 name={hidePassConfirm ? 'eye' : 'eye-off'}
                 size={30}
                 style={styles.passIcon}
-                onPress={() => setHidePass(!hidePass)}
+                onPress={() => setHidePassConfirm(!hidePassConfirm)}
               />
             </View>
+            <Text style={styles.errorText}>
+              password tidak sama
+            </Text>
           </View>
           <LinearGradient colors={['#DE5454', '#FF7C32']} style={styles.button}>
             <View>
               <Text
                 style={styles.buttonText}
-              // onPress={() => navigation.navigate('Daftar')}
+                //onPress={() => navigation.navigate('Login')}
+                onPress={() => { register(1, employee_nik, employee_name, employee_email, employee_departement, employee_phone_no, employee_password); navigation.navigate('Login') }}
               >
                 Daftar
               </Text>

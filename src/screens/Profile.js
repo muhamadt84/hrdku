@@ -1,16 +1,27 @@
-import React, { useState } from 'react';
+import React, { useContext, useEffect } from 'react';
 import { Image, ImageBackground, StyleSheet, Text, View, TouchableWithoutFeedback, Alert, Modal, Pressable } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import { AuthContext } from '../context/AuthContext';
 import LayoutContainer from '../components/LayoutContainer';
 
 import BgGray from '../assets/images/Bg-Gray.png';
-
-import ICPlay from '../assets/images/Play.png';
+import ICEdit from '../assets/images/Edit.png';
+import ICWA from '../assets/images/WA.png';
 import LinearGradient from 'react-native-linear-gradient';
 
-function Home() {
+function Profile() {
   const navigation = useNavigation();
-  const [modalVisible, setModalVisible] = useState(false);
+  const { userInfo, logout } = useContext(AuthContext);
+
+  useEffect(() => {
+    console.log("di profile")
+    console.log(userInfo.Data)
+    if (userInfo.Data) {
+      userInfo.Data.token ? null : navigation.navigate('Login')
+    } else {
+      navigation.navigate('Login')
+    }
+  }, [])
 
   return (
     <LayoutContainer>
@@ -19,35 +30,48 @@ function Home() {
         style={styles.bgImage}
         source={BgGray}
         resizeMode="cover">
+
         <View style={styles.containerHeader}>
           <TouchableWithoutFeedback onPress={() => navigation.goBack()}>
             <Image source={require('../assets/images/Back.png')} style={styles.icback}
             />
           </TouchableWithoutFeedback>
           <Text style={styles.textHeader}>Profile</Text>
+
+          <Text style={styles.textHeaderLeft} onPress={logout}>Logout</Text>
         </View>
+
         <View>
           <View style={styles.bgWhite} />
 
           <LinearGradient colors={['#DE5454', '#FF7C32']} style={styles.containerProfile}>
             <View style={styles.containerProfileIcon} >
-              <Image style={styles.iconProfile} source={ICPlay} />
+              <Image style={styles.iconProfile} source={{ uri: userInfo.Data.user.profile.employee_avatar }} />
               <Text style={styles.descPhoto}>Change photo</Text>
-              <Text style={styles.nameProfile}>Angga Kurnia A</Text>
+              <Text style={styles.nameProfile}>{userInfo.Data.user.profile.fullname}</Text>
               <Text style={styles.descProfile}>UI/UX Designer</Text>
               <View style={styles.containerNIP}>
-                <Text style={styles.descNIP}>NIP 199508261008 </Text>
+                <Text style={styles.descNIP}>{userInfo.Data.user.employee_nik} </Text>
               </View>
               <View style={styles.containerWA}>
+                <Image style={styles.iconWA} source={ICWA} />
                 <Text style={styles.descWA}>WhatsApp </Text>
               </View>
             </View>
+            <View>
+              <TouchableWithoutFeedback onPress={() => navigation.navigate('EditProfile')}>
+                <Image source={ICEdit} style={styles.icEdit} />
+              </TouchableWithoutFeedback>
+            </View>
           </LinearGradient>
 
-          <View style={[styles.containerDetailLaporan, styles.boxShadow, styles.position1]}>
-            <Text>Detail kehadiran izin atau sakit</Text>
-            <Image source={require('../assets/images/Forward.png')} style={styles.icArrow} />
-          </View>
+          <TouchableWithoutFeedback onPress={() => navigation.navigate('DetailProfile')}>
+            <View style={[styles.containerDetailLaporan, styles.boxShadow, styles.position1]}>
+
+              <Text>Detail kehadiran izin atau sakit</Text>
+              <Image source={require('../assets/images/Forward.png')} style={styles.icArrow} />
+            </View>
+          </TouchableWithoutFeedback>
 
           <View style={[styles.containerDetailLaporan, styles.boxShadow, styles.position2]}>
             <Text>Detail Laporan Kerja</Text>
@@ -58,12 +82,10 @@ function Home() {
             <Text>Perihal Kehadiran</Text>
             <Text style={styles.descAbsen}>98% (Sangat baik)</Text>
           </View>
-
           <View style={[styles.containerDetailLaporan, styles.position4]}>
             <Text style={styles.descIzin}>Total keseluruhan Permintaan izin, sakit, dll</Text>
             <Text style={styles.TotalIzin}>21</Text>
           </View>
-
           <View style={[styles.containerDetailLaporan, styles.position5]}>
             <View style={styles.detailAbsen}>
               <Text style={styles.desc}>Perihal Absen</Text>
@@ -78,13 +100,13 @@ function Home() {
               <Text style={styles.descTotal}>5</Text>
             </View>
           </View>
-
+          <View style={{ borderBottomColor: '#F2F2F2', borderBottomWidth: 1, top: 500, position: 'absolute', width: 350, marginTop: 10, marginHorizontal: 20 }} />
+          <View style={{ borderBottomColor: '#F2F2F2', borderBottomWidth: 1, top: 580, position: 'absolute', width: 350, marginTop: 10, marginHorizontal: 20 }} />
         </View>
       </ImageBackground>
     </LayoutContainer >
   );
 }
-
 
 const styles = StyleSheet.create({
   containerHeader: {
@@ -100,6 +122,15 @@ const styles = StyleSheet.create({
     fontWeight: '600',
     color: '#3F414E',
     paddingLeft: 20,
+  },
+  textHeaderLeft: {
+    fontSize: 16,
+    fontWeight: '400',
+    color: '#3F414E',
+    paddingLeft: 20,
+    position: 'absolute',
+    right: 30,
+    top: 65,
   },
   bgImage: {
     flex: 1,
@@ -129,8 +160,8 @@ const styles = StyleSheet.create({
   },
 
   iconProfile: {
-    width: 40,
-    height: 45,
+    width: 50,
+    height: 50,
     borderRadius: 10,
   },
   contentProfile: {
@@ -141,7 +172,7 @@ const styles = StyleSheet.create({
   containerProfileIcon: {
     // position: 'relative',
     width: '100%',
-    height: 255,
+    height: 260,
     flexDirection: 'column',
     justifyContent: 'space-between',
     alignItems: 'center',
@@ -180,6 +211,12 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     borderRadius: 15,
     padding: 10,
+    flexDirection: 'row',
+    marginTop: 10,
+  },
+  iconWA: {
+    height: 21,
+    marginRight: 8,
   },
   descWA: {
     color: 'black',
@@ -192,7 +229,6 @@ const styles = StyleSheet.create({
     padding: 20,
     borderRadius: 15,
     color: 'black',
-
   },
   containerDetailLaporan: {
     position: 'absolute',
@@ -260,6 +296,10 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     alignItems: 'center',
   },
-
+  icEdit: {
+    position: 'absolute',
+    right: 16,
+    top: 16,
+  },
 });
-export default Home;
+export default Profile;

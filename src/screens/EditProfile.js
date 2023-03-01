@@ -1,10 +1,7 @@
 import React, { useState } from 'react';
 import { ScrollView, StyleSheet, Text, View, TextInput, Image, ImageBackground, TouchableWithoutFeedback } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import CheckBox from '@react-native-community/checkbox';
 import LayoutContainer from '../components/LayoutContainer';
-import SelectDropdown from 'react-native-select-dropdown'
-import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import LinearGradient from 'react-native-linear-gradient';
 
 function EditProfile() {
@@ -31,8 +28,9 @@ function EditProfile() {
             <TextInput style={styles.input} placeholder="Kode Perusahaan" />
             <TextInput style={styles.input} placeholder="ID Karyawan*" />
             <TextInput style={styles.input} placeholder="Nama Lengkap" />
-            <TextInput style={styles.input} placeholder="Email*" />
             <TextInput style={styles.input} placeholder="Job Desk / Departemen*" />
+            <TextInput style={styles.input} placeholder="No Telp" />
+            <View style={{ borderBottomColor: '#F2F2F2', borderBottomWidth: 1, width: 350, marginTop: 30 }} />
           </View>
           <LinearGradient colors={['#DE5454', '#FF7C32']} style={styles.button}>
             <View>
@@ -44,6 +42,18 @@ function EditProfile() {
               </Text>
             </View>
           </LinearGradient>
+
+          <View style={{ justifyContent: 'center', alignItems: 'center', }}>
+            <View style={styles.outlinedbutton}>
+              <Text
+                style={styles.outlinedbuttonText}
+              // onPress={() => navigation.navigate('EditProfile')}
+              >
+                Ganti Kata Sandi
+              </Text>
+            </View>
+          </View>
+
         </View>
       </LayoutContainer>
     </ScrollView >
@@ -74,6 +84,22 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontWeight: 'bold',
     color: 'white',
+  },
+  outlinedbutton: {
+    marginTop: 30,
+    width: 300,
+    backgroundColor: 'white',
+    borderColor: '#F05D48',
+    borderWidth: 1,
+    borderRadius: 100,
+  },
+  outlinedbuttonText: {
+    textTransform: 'uppercase',
+    textAlign: 'center',
+    padding: 20,
+    fontSize: 14,
+    fontWeight: 'bold',
+    color: '#F05D48',
   },
   input: {
     marginTop: 20,

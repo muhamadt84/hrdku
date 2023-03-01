@@ -1,7 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import { Image, ImageBackground, StyleSheet, Text, View, TouchableWithoutFeedback, Alert, Modal, Pressable } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import LayoutContainer from '../components/LayoutContainer';
+import { AuthContext } from '../context/AuthContext';
+import { useSelector } from 'react-redux';
 
 import Icon from 'react-native-vector-icons/Ionicons';
 import BgLogin from '../assets/images/Bg-Login.png';
@@ -21,6 +23,15 @@ import LinearGradient from 'react-native-linear-gradient';
 function Home() {
   const navigation = useNavigation();
   const [modalVisible, setModalVisible] = useState(false);
+  const { isLoading, userInfo } = useContext(AuthContext);
+  const access_token = useSelector(store => store.tokenReducer.token);
+  const current_user = useSelector(store => store.userReducer.user);
+
+  useEffect(() => {
+    if (userInfo.Data) {
+      userInfo.Data.token ? null : navigation.navigate('Login')
+    }
+  }, [])
 
   return (
     <LayoutContainer>
@@ -54,12 +65,10 @@ function Home() {
         resizeMode="cover">
         <View style={styles.padding}>
           <View style={styles.containerName}>
-            <Text style={styles.name}>Hi, Taufik Hidayah</Text>
+            <Text style={styles.name}>Hi, { }</Text>
             {/* <ICNotification /> */}
             <View style={styles.containerIcon}>
-
               <TouchableWithoutFeedback onPress={() => navigation.navigate('Notifikasi')}>
-
                 <View>
                   <Image
                     source={ICNotification}
@@ -73,11 +82,9 @@ function Home() {
                     height={50}
                     style={styles.badges}
                     onPress={() => navigation.navigate('Notifikasi')}
-
                   />
                 </View>
               </TouchableWithoutFeedback>
-
               <TouchableWithoutFeedback onPress={() => navigation.navigate('Profile')}>
                 <Image
                   source={ICProfile}
@@ -91,7 +98,7 @@ function Home() {
           <Text style={styles.wish}>Semoga hari mu menyenangkan!</Text>
           <View style={styles.containerAddress}>
             <Icon name="location-outline" size={20} style={styles.iconPin} />
-            <Text style={styles.address}>
+            <Text style={styles.address} onPress={() => navigation.navigate('Lokasi')}>
               Bintaro Sektor 3, mandar utama III, Kota Tangerang Selatan.
             </Text>
           </View>
@@ -143,7 +150,6 @@ function Home() {
                 <Text
                   style={styles.buttonText}
                   onPress={() => navigation.navigate('Camera')}
-                //onPress={() => setModalVisible(true)}
                 >
                   Absen Sekarang
                 </Text>
@@ -151,27 +157,32 @@ function Home() {
             </LinearGradient>
           </View>
 
-          <ImageBackground source={BgLihatAbsen} style={styles.containerLihatAbsen} imageStyle={{ borderRadius: 18 }}>
-            <View>
-              <Text style={styles.descLihatAbsen}>Lihat Absensi Harian</Text>
-              <Text style={styles.address}>Sudah Absen hari ini 68</Text>
-            </View>
-            <View>
-              <Image source={ICPlay} />
-            </View>
-          </ImageBackground>
+          <TouchableWithoutFeedback onPress={() => navigation.navigate('AbsenHarian')}>
+            <ImageBackground source={BgLihatAbsen} style={styles.containerLihatAbsen} imageStyle={{ borderRadius: 18 }}>
+              <View>
+                <Text style={styles.descLihatAbsen}>Lihat Absensi Harian</Text>
+                <Text style={styles.address}>Sudah Absen hari ini 68</Text>
+              </View>
+              <View>
+                <Image source={ICPlay} />
+              </View>
+            </ImageBackground>
+          </TouchableWithoutFeedback>
 
           <View style={styles.containerTugasLaporan}>
-            <View style={styles.containerTugas}>
-              <Image source={ICDocs} />
-              <Text style={styles.descAbsen}>Tugas Kerja</Text>
-            </View>
-            <View style={styles.containerTugas}>
-              <Image source={ICDocs} />
-              <Text style={styles.descAbsen}>Laporan Kerja</Text>
-            </View>
+            <TouchableWithoutFeedback onPress={() => navigation.navigate('DaftarTugas')}>
+              <View style={styles.containerTugas}>
+                <Image source={ICDocs} />
+                <Text style={styles.descAbsen}>Tugas Kerja</Text>
+              </View>
+            </TouchableWithoutFeedback>
+            <TouchableWithoutFeedback onPress={() => navigation.navigate('LaporanKerja')}>
+              <View style={styles.containerTugas}>
+                <Image source={ICDocs} />
+                <Text style={styles.descAbsen}>Laporan Kerja</Text>
+              </View>
+            </TouchableWithoutFeedback>
           </View>
-
         </View>
       </ImageBackground>
     </LayoutContainer >
@@ -182,9 +193,6 @@ function Home() {
 const styles = StyleSheet.create({
   bgImage: {
     flex: 1,
-    // padding: 25
-    // alignItems: 'center',
-    // justifyContent: 'center'
   },
   bgWhite: {
     marginTop: 75,
